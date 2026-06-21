@@ -845,6 +845,8 @@ performance_profile() {
 
 	# Memory tweak
 	apply 80 /proc/sys/vm/vfs_cache_pressure
+	apply 20 /proc/sys/vm/dirty_background_ratio
+	apply 40 /proc/sys/vm/dirty_ratio
 
 	# Set CPU governor to performance.
 	# If lite mode enabled, use the default governor instead.
@@ -925,6 +927,8 @@ balance_profile() {
 
 	# Memory Tweaks
 	apply 120 /proc/sys/vm/vfs_cache_pressure
+	apply 5 /proc/sys/vm/dirty_background_ratio
+	apply 20 /proc/sys/vm/dirty_ratio
 
 	# Restore min CPU frequency
 	change_cpu_gov "$DEFAULT_CPU_GOV"
