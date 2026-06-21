@@ -760,8 +760,8 @@ perfcommon() {
 	# Disable Sched auto group
 	apply 0 /proc/sys/kernel/sched_autogroup_enabled
 
-	# Enable CRF
-	apply 1 /proc/sys/kernel/sched_child_runs_first
+	# Disable CRF
+	apply 0 /proc/sys/kernel/sched_child_runs_first
 
 	# Improve real time latencies by reducing the scheduler migration time
 	apply 32 /proc/sys/kernel/sched_nr_migrate
