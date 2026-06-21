@@ -866,10 +866,10 @@ performance_profile() {
 	# I/O Tweaks
 	for dir in /sys/block/mmcblk0 /sys/block/mmcblk1 /sys/block/sd*; do
 		# Reduce heuristic read-ahead in exchange for I/O latency
-		apply 32 "$dir/queue/read_ahead_kb"
+		apply 64 "$dir/queue/read_ahead_kb"
 
 		# Reduce the maximum number of I/O requests in exchange for latency
-		apply 32 "$dir/queue/nr_requests"
+		apply 64 "$dir/queue/nr_requests"
 	done &
 
 	case $SOC in
