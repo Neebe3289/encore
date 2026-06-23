@@ -230,6 +230,16 @@ snapdragon_force_kgsl_pwrlevel() {
 ###################################
 
 mediatek_performance() {
+	# GED boost parameters
+	if [ -d /sys/module/ged/parameters ]; then
+		for param in boost_extra boost_gpu_enable cpu_boost_policy enable_cpu_boost \
+		             enable_gpu_boost ged_boost_enable ged_smart_boost \
+		             gx_boost_on gx_game_mode; do
+			apply 1 "/sys/module/ged/parameters/$param"
+		done
+		apply 10 /sys/module/ged/parameters/gpu_idle
+	fi
+
 	# PPM policies
 	if [ -d /proc/ppm ]; then
 		grep -E "PWR_THRO|THERMAL" /proc/ppm/policy_status | while read -r row; do
@@ -440,6 +450,16 @@ tensor_performance() {
 ###################################
 
 mediatek_normal() {
+	# GED boost parameters
+	if [ -d /sys/module/ged/parameters ]; then
+		for param in boost_extra boost_gpu_enable cpu_boost_policy enable_cpu_boost \
+		             enable_gpu_boost ged_boost_enable gx_boost_on gx_game_mode; do
+			apply 0 "/sys/module/ged/parameters/$param"
+		done
+		apply 1 /sys/module/ged/parameters/ged_smart_boost
+		apply 100 /sys/module/ged/parameters/gpu_idle
+	fi
+
 	# PPM policies
 	if [ -d /proc/ppm ]; then
 		grep -E "PWR_THRO|THERMAL" /proc/ppm/policy_status | while read -r row; do
