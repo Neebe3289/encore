@@ -769,11 +769,6 @@ perfcommon() {
 	# Improve real time latencies by reducing the scheduler migration time
 	apply 32 /proc/sys/kernel/sched_nr_migrate
 
-	# Tweaking scheduler to reduce latency
-	apply 50000 /proc/sys/kernel/sched_migration_cost_ns
-	apply 1000000 /proc/sys/kernel/sched_min_granularity_ns
-	apply 1500000 /proc/sys/kernel/sched_wakeup_granularity_ns
-
 	# Disable read-ahead for swap devices
 	apply 0 /proc/sys/vm/page-cluster
 
@@ -888,6 +883,12 @@ performance_profile() {
 	esac
 
 	echo 3 >/proc/sys/vm/drop_caches
+
+	# Scheduler tweak
+	apply 8000000 /proc/sys/kernel/sched_latency_ns
+	apply 200000 /proc/sys/kernel/sched_migration_cost_ns
+	apply 1500000 /proc/sys/kernel/sched_min_granularity_ns
+	apply 2000000 /proc/sys/kernel/sched_wakeup_granularity_ns
 }
 
 balance_profile() {
@@ -961,6 +962,12 @@ balance_profile() {
 	5) tensor_normal ;;
 	6) tegra_normal ;;
 	esac
+
+	# Scheduler tweak
+	apply 10000000 /proc/sys/kernel/sched_latency_ns
+	apply 500000 /proc/sys/kernel/sched_migration_cost_ns
+	apply 2000000 /proc/sys/kernel/sched_min_granularity_ns
+	apply 4000000 /proc/sys/kernel/sched_wakeup_granularity_ns
 }
 
 powersave_profile() {
