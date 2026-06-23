@@ -459,7 +459,7 @@ mediatek_normal() {
 		             enable_gpu_boost ged_boost_enable gx_boost_on gx_game_mode; do
 			apply 0 "/sys/module/ged/parameters/$param"
 		done
-		apply 1 /sys/module/ged/parameters/ged_smart_boost
+		apply 0 /sys/module/ged/parameters/ged_smart_boost
 		apply 100 /sys/module/ged/parameters/gpu_idle
 	fi
 
