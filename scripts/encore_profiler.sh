@@ -250,9 +250,12 @@ mediatek_performance() {
 	# Force off FPSGO
 	apply 0 /sys/kernel/fpsgo/common/force_onoff
 
-	# MTK Power and CCI mode
-	apply 1 /proc/cpufreq/cpufreq_cci_mode
+	# MTK CPU Power mode
+	apply 1 /proc/cpufreq/cpufreq_sched_disable
 	apply 3 /proc/cpufreq/cpufreq_power_mode
+	apply 1 /proc/cpufreq/cpufreq_imax_enable
+	apply 0 /proc/cpufreq/cpufreq_imax_thermal_protect
+	apply 1 /proc/cpufreq/cpufreq_cci_mode
 
 	# DDR Boost mode
 	apply 1 /sys/devices/platform/boot_dramboost/dramboost/dramboost
@@ -470,9 +473,12 @@ mediatek_normal() {
 	# Free FPSGO
 	apply 2 /sys/kernel/fpsgo/common/force_onoff
 
-	# MTK Power and CCI mode
+	# MTK CPU Power mode
+	apply 0 /proc/cpufreq/cpufreq_sched_disable
+	apply 1 /proc/cpufreq/cpufreq_power_mode
+	apply 0 /proc/cpufreq/cpufreq_imax_enable
+	apply 1 /proc/cpufreq/cpufreq_imax_thermal_protect
 	apply 0 /proc/cpufreq/cpufreq_cci_mode
-	apply 0 /proc/cpufreq/cpufreq_power_mode
 
 	# DDR Boost mode
 	apply 0 /sys/devices/platform/boot_dramboost/dramboost/dramboost
@@ -632,9 +638,6 @@ tensor_normal() {
 ###################################
 
 mediatek_powersave() {
-	# Set MTK CPU Power mode to low power
-	apply 1 /proc/cpufreq/cpufreq_power_mode
-
 	# GPU Frequency
 	if [ -d /proc/gpufreqv2 ]; then
 		min_gpufreq_index=$(mtk_gpufreq_minfreq_index /proc/gpufreqv2/gpu_working_opp_table)
