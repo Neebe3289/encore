@@ -828,12 +828,13 @@ performance_profile() {
 		apply NO_TTWU_QUEUE /sys/kernel/debug/sched_features
 	fi
 
+	# Stune top-app
 	if [ -d "/dev/stune/" ]; then
-		# Prefer to schedule top-app tasks on idle CPUs
-		apply 1 /dev/stune/top-app/schedtune.prefer_idle
+		# Disable stune top-app prefer_idle
+		apply 0 /dev/stune/top-app/schedtune.prefer_idle
 
 		# Mark top-app as boosted, find high-performing CPUs
-		apply 1 /dev/stune/top-app/schedtune.boost
+		apply 20 /dev/stune/top-app/schedtune.boost
 	fi
 
 	# Oppo/Oplus/Realme Touchpanel
