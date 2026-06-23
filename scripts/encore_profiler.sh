@@ -890,12 +890,12 @@ performance_profile() {
 }
 
 balance_profile() {
-	# Disable battery saver module
+	# Enable attery saver module
 	[ -f /sys/module/battery_saver/parameters/enabled ] && {
 		if grep -qo '[0-9]\+' /sys/module/battery_saver/parameters/enabled; then
-			apply 0 /sys/module/battery_saver/parameters/enabled
+			apply 1 /sys/module/battery_saver/parameters/enabled
 		else
-			apply N /sys/module/battery_saver/parameters/enabled
+			apply Y /sys/module/battery_saver/parameters/enabled
 		fi
 	}
 
@@ -910,9 +910,10 @@ balance_profile() {
 		apply TTWU_QUEUE /sys/kernel/debug/sched_features
 	fi
 
+	# Stune top-app
 	if [ -d "/dev/stune/" ]; then
-		# We are not concerned with prioritizing latency
-		apply 0 /dev/stune/top-app/schedtune.prefer_idle
+		# Allow cores to go idle, we are not concerned with prioritizing latency
+		apply 1 /dev/stune/top-app/schedtune.prefer_idle
 
 		# Don't boost foreground tasks, let the governor handle it
 		apply 0 /dev/stune/top-app/schedtune.boost
@@ -963,18 +964,6 @@ balance_profile() {
 
 powersave_profile() {
 	balance_profile
-
-	# Allow cores to go idle, we are not concerned with prioritizing latency
-	[ -d "/dev/stune/" ] && apply 1 /dev/stune/top-app/schedtune.prefer_idle
-
-	# Enable battery saver module
-	[ -f /sys/module/battery_saver/parameters/enabled ] && {
-		if grep -qo '[0-9]\+' /sys/module/battery_saver/parameters/enabled; then
-			apply 1 /sys/module/battery_saver/parameters/enabled
-		else
-			apply Y /sys/module/battery_saver/parameters/enabled
-		fi
-	}
 
 	# CPU governor
 	change_cpu_gov "$ENCORE_POWERSAVE_CPUGOV"
